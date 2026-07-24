@@ -596,6 +596,23 @@
     section {
       margin-bottom: 22px;
     }
+    /* Force expand student answers for printing / PDF export */
+    details.answer-toggle {
+      display: block !important;
+    }
+    details.answer-toggle summary {
+      display: block !important;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    details.answer-toggle summary::before {
+      content: "▾ " !important;
+    }
+    details.answer-toggle .student-answer {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
   }
 </style>
 </head>
@@ -896,8 +913,8 @@ function questionCard(q, studentAnswer) {
     ${rubricBar(q.rubric_scores)}
 
     ${studentAnswer ? `
-    <details class="answer-toggle">
-      <summary>View student's answer</summary>
+    <details class="answer-toggle" open>
+      <summary>Student's Written Answer</summary>
       <div class="student-answer"><b>Student wrote</b>${esc(studentAnswer)}</div>
     </details>` : ""}
 
@@ -1262,6 +1279,13 @@ window.addEventListener("DOMContentLoaded", () => {
       window.opener.postMessage({ type: "REPORT_VIEWER_READY" }, "*");
     } catch(e) {}
   }
+
+  // Auto-expand all student answer details before printing / saving PDF
+  window.addEventListener("beforeprint", () => {
+    document.querySelectorAll("details.answer-toggle").forEach(el => {
+      el.open = true;
+    });
+  });
 
   // Fallback: Load from localStorage or Demo Data
   if (!loadFromLocalStorage()) {
