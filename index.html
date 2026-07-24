@@ -37,6 +37,7 @@
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 14.5px;
     line-height: 1.55;
+    overflow-x: hidden;
   }
 
   /* ---------- Top Action Toolbar ---------- */
@@ -561,6 +562,128 @@
   .toast.show {
     transform: translateY(0);
     opacity: 1;
+  }
+
+  /* ---------- Responsive Design ---------- */
+  @media (max-width: 768px) {
+    .sheet {
+      padding: 24px 18px 60px;
+    }
+    .toolbar {
+      padding: 10px 16px;
+    }
+    .masthead-top {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .masthead .meta {
+      text-align: left;
+    }
+    .masthead-main {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .masthead h1 {
+      font-size: 26px;
+    }
+    .summary-row {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 24px;
+    }
+    .stat-grid {
+      width: 100%;
+    }
+    .stat {
+      padding: 2px 10px;
+      text-align: center;
+    }
+    .mcq-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .two-col {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .qcard {
+      padding: 16px 16px 18px;
+    }
+    .qcard-head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .marks-badge {
+      align-self: flex-start;
+    }
+    .section-title {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    .modal-content {
+      max-height: 95vh;
+    }
+    .modal-header, .modal-body, .modal-footer {
+      padding: 14px 16px;
+    }
+    .modal-footer {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+    .modal-footer-right {
+      justify-content: flex-end;
+    }
+    .toast {
+      bottom: 16px;
+      right: 16px;
+      left: 16px;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sheet {
+      padding: 16px 12px 40px;
+    }
+    .masthead h1 {
+      font-size: 22px;
+    }
+    .mcq-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .stat-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .stat {
+      border-left: none;
+      border-bottom: 1px solid var(--line);
+      padding: 0 0 10px 0;
+    }
+    .stat:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toolbar-left, .toolbar-right {
+      width: 100%;
+      justify-content: center;
+    }
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+    .modal-footer-right {
+      flex-direction: column;
+    }
+    .modal-footer-right .btn {
+      width: 100%;
+    }
   }
 
   /* ---------- Media Print Support ---------- */
