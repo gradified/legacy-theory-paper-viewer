@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Assessment Report — Powered by Gradified</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1b2431;
+    --ink-soft: #4a5568;
+    --paper: #f7f5f0;
+    --card: #ffffff;
+    --line: #dfdad0;
+    --navy: #1f3550;
+    --navy-deep: #132234;
+    --gold: #b8862f;
+    --gold-soft: #f1e3c4;
+    --good: #2f6b4f;
+    --good-bg: #e7f1ea;
+    --mid: #9a6b1c;
+    --mid-bg: #faf1de;
+    --bad: #9c3b3b;
+    --bad-bg: #f7e9e9;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+
+  /* ---------- Top Action Toolbar ---------- */
+  .toolbar-wrapper {
+    background: #ffffff;
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .toolbar {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .data-status-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+  }
+  .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    transition: all 0.15s ease;
+  }
+  .btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+  }
+  .btn-primary {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .btn-primary:hover {
+    background: var(--navy-deep);
+    border-color: var(--navy-deep);
+  }
+  .btn-accent {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .btn-accent:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+
+  /* ---------- Sheet Container ---------- */
+  .sheet {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 48px 80px;
+  }
+
+  /* ---------- Header / Branding ---------- */
+  .masthead {
+    border-bottom: 3px solid var(--navy);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+  }
+  .masthead-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .brand-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-logo {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .powered-by {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .brand-name {
+    font-family: 'Source Serif 4', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy-deep);
+    letter-spacing: -0.01em;
+  }
+  .masthead-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--navy-deep);
+  }
+  .masthead .meta {
+    text-align: right;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .masthead .meta div { margin-bottom: 2px; }
+
+  /* ---------- Score dial + summary ---------- */
+  .summary-row {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+  }
+  .dial-wrap {
+    position: relative;
+    width: 112px;
+    height: 112px;
+    flex: 0 0 auto;
+  }
+  .dial-wrap svg { transform: rotate(-90deg); }
+  .dial-pct {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .dial-pct b { font-family: 'Source Serif 4', serif; font-size: 26px; color: var(--navy-deep); }
+  .dial-pct span { font-size: 10px; color: var(--ink-soft); letter-spacing: .05em; text-transform: uppercase; }
+  .stat-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .stat {
+    border-left: 1px solid var(--line);
+    padding: 2px 20px;
+  }
+  .stat:first-child { border-left: none; padding-left: 0; }
+  .stat .num { font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 600; color: var(--navy); }
+  .stat .lbl { font-size: 11.5px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .05em; }
+
+  /* ---------- Teacher's note ---------- */
+  .note {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--gold);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 34px;
+  }
+  .note .eyebrow { margin-bottom: 8px; }
+  .note p { margin: 0 0 10px; color: var(--ink); }
+  .note p:last-child { margin-bottom: 0; }
+
+  /* ---------- Section headers ---------- */
+  .section-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--navy-deep);
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--navy);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .section-title .tally {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+  section { margin-bottom: 36px; }
+
+  /* ---------- MCQ grid ---------- */
+  .mcq-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .mcq-cell {
+    border: 1px solid var(--line);
+    background: var(--card);
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-size: 12.5px;
+  }
+  .mcq-cell .q {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--ink-soft);
+    font-size: 11px;
+  }
+  .mcq-cell .opt { font-weight: 600; margin-top: 2px; }
+  .mcq-cell.correct { border-left: 3px solid var(--good); }
+  .mcq-cell.correct .opt { color: var(--good); }
+  .mcq-cell.wrong { border-left: 3px solid var(--bad); }
+  .mcq-cell.wrong .opt { color: var(--bad); }
+  .mcq-cell .given { font-size: 11px; color: var(--ink-soft); font-weight: 400; }
+
+  /* ---------- Question cards ---------- */
+  .qcard {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 18px 22px 20px;
+    margin-bottom: 16px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .qcard-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+  .qcard-head h3 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--ink);
+  }
+  .qcard-head .qid {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    margin-bottom: 2px;
+    display: block;
+  }
+  .marks-badge {
+    flex: 0 0 auto;
+    text-align: center;
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .marks-badge.correct { background: var(--good-bg); color: var(--good); }
+  .marks-badge.partially_correct { background: var(--mid-bg); color: var(--mid); }
+  .marks-badge.incorrect { background: var(--bad-bg); color: var(--bad); }
+
+  .rubric-bar {
+    display: flex;
+    height: 9px;
+    border-radius: 5px;
+    overflow: hidden;
+    background: var(--line);
+    margin-bottom: 6px;
+  }
+  .rubric-bar .seg { height: 100%; }
+  .rubric-bar .seg.hit { background: var(--good); }
+  .rubric-bar .seg.miss { background: var(--bad-bg); }
+  .rubric-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  .rubric-labels span b { color: var(--ink); }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 12px;
+  }
+  .col-title {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .col-title.good { color: var(--good); }
+  .col-title.bad { color: var(--bad); }
+  ul.pt-list { margin: 0; padding-left: 16px; }
+  ul.pt-list li { margin-bottom: 3px; }
+
+  .feedback-line {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+    border-top: 1px dashed var(--line);
+    padding-top: 10px;
+    margin-top: 4px;
+  }
+
+  .student-answer {
+    background: #fbfaf7;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    white-space: pre-wrap;
+  }
+  .student-answer b { color: var(--ink); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; display: block; margin-bottom: 4px; }
+
+  details.answer-toggle summary {
+    cursor: pointer;
+    font-size: 11.5px;
+    color: var(--navy);
+    font-weight: 600;
+    margin-bottom: 8px;
+    list-style: none;
+  }
+  details.answer-toggle summary::-webkit-details-marker { display: none; }
+  details.answer-toggle summary::before { content: "▸ "; }
+  details.answer-toggle[open] summary::before { content: "▾ "; }
+
+  footer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ---------- Modal Dialog ---------- */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(19, 34, 52, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    padding: 20px;
+  }
+  .modal-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-content {
+    background: #ffffff;
+    border-radius: 12px;
+    max-width: 720px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    transform: translateY(12px);
+    transition: transform 0.2s ease;
+  }
+  .modal-backdrop.active .modal-content {
+    transform: translateY(0);
+  }
+  .modal-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-header h3 {
+    margin: 0;
+    font-family: 'Source Serif 4', serif;
+    font-size: 20px;
+    color: var(--navy-deep);
+  }
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+  }
+  .modal-close:hover { color: var(--navy-deep); }
+  .modal-body {
+    padding: 20px 24px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .modal-body p {
+    margin: 0 0 12px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  .json-textarea {
+    width: 100%;
+    height: 280px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.45;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #fbfaf7;
+    color: #1e293b;
+    resize: vertical;
+  }
+  .json-textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+  .error-banner {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--bad-bg);
+    border: 1px solid #f87171;
+    border-radius: 6px;
+    color: var(--bad);
+    font-size: 12.5px;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: pre-wrap;
+  }
+  .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: #fdfbf7;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }
+  .modal-footer-right {
+    display: flex;
+    gap: 10px;
+  }
+
+  /* Toast Notification */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--navy-deep);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 2000;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* ---------- Media Print Support ---------- */
+  @media print {
+    body {
+      background: #fff;
+      color: #000;
+      font-size: 12.5px;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .toolbar-wrapper, .modal-backdrop, .toast {
+      display: none !important;
+    }
+    .sheet {
+      padding: 0;
+      max-width: 100%;
+      margin: 0;
+    }
+    .masthead {
+      border-bottom: 3px solid var(--navy) !important;
+    }
+    .brand-logo {
+      height: 42px !important;
+      display: block !important;
+    }
+    .qcard, .note {
+      box-shadow: none !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+    a[href] {
+      color: inherit;
+      text-decoration: none;
+    }
+    section {
+      margin-bottom: 22px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Navigation / Action Bar -->
+<div class="toolbar-wrapper">
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="data-status-tag" id="statusTag">
+        <span class="status-dot"></span>
+        <span id="statusText">Sample Evaluation Data</span>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <button class="btn btn-accent" onclick="openJsonModal()">
+        <span>📋 Paste / Edit JSON</span>
+      </button>
+      <button class="btn" onclick="triggerFileInput()">
+        <span>📁 Open JSON File</span>
+      </button>
+      <button class="btn" onclick="resetToDemoData()" title="Reset to original sample data">
+        <span>🔄 Reset</span>
+      </button>
+      <button class="btn btn-primary" onclick="window.print()">
+        <span>🖨️ Print / Save as PDF</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden File Input -->
+<input type="file" id="fileInput" accept=".json,application/json,.txt" style="display:none;" onchange="handleFileUpload(event)">
+
+<!-- Main Sheet Container -->
+<div class="sheet" id="sheet">
+  <!-- Rendered dynamically by JavaScript -->
+</div>
+
+<!-- Paste JSON Modal -->
+<div class="modal-backdrop" id="jsonModal" onclick="handleModalBackdropClick(event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Paste Evaluation JSON Data</h3>
+      <button class="modal-close" onclick="closeJsonModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Paste evaluation report JSON or JavaScript object below to render report view for any student/user. You can also drag and drop a <code>.json</code> file into this box.</p>
+      <textarea id="jsonTextArea" class="json-textarea" placeholder="Paste your REPORT_DATA JSON object here... (e.g. { summary: {...}, mcqResults: [...], ... })"></textarea>
+      <div id="jsonError" class="error-banner"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="loadSampleIntoModal()">Load Sample JSON</button>
+      <div class="modal-footer-right">
+        <button class="btn" onclick="closeJsonModal()">Cancel</button>
+        <button class="btn btn-accent" onclick="applyJsonFromModal()">Render Report</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Feedback -->
+<div class="toast" id="toast">Report updated successfully!</div>
+
+<script>
+/* ============================================================
+   DEFAULT SAMPLE DATA (Fallback / Demo)
+   ============================================================ */
+const DEMO_REPORT_DATA = {
+  "summary": {
+    "percentage": 87.5,
+    "total_max_marks": 80,
+    "total_questions": 37,
+    "total_awarded_marks": 70,
+    "student_name": "Student Assessment",
+    "subject": "Social Science",
+    "exam_name": "Theory Evaluation"
+  },
+  "mcqResults": [
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"1","marks_awarded":1,"correct_option":"B","student_option":"B"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"2","marks_awarded":1,"correct_option":"C","student_option":"C"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"3","marks_awarded":1,"correct_option":"B","student_option":"B"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"4","marks_awarded":1,"correct_option":"C","student_option":"C"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"5","marks_awarded":1,"correct_option":"B","student_option":"B"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"12","marks_awarded":1,"correct_option":"B","student_option":"B"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"13","marks_awarded":1,"correct_option":"B","student_option":"B"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"14","marks_awarded":1,"correct_option":"A","student_option":"A"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"15","marks_awarded":1,"correct_option":"C","student_option":"C"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"16","marks_awarded":1,"correct_option":"B","student_option":"B"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"25","marks_awarded":1,"correct_option":"B","student_option":"B"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"26","marks_awarded":1,"correct_option":"B","student_option":"B"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"27","marks_awarded":1,"correct_option":"C","student_option":"C"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"28","marks_awarded":1,"correct_option":"C","student_option":"C"},
+    {"max_marks":1,"is_correct":true,"answer_type":"mcq","correctness":"correct","question_id":"29","marks_awarded":1,"correct_option":"A","student_option":"A"}
+  ],
+  "studentAnswers": {
+    "byQuestionId": {
+      "6": "Latitudes are the imaginary lines which are drawn on the globe. They go from left to right side horizontally and they help us to find out how much hot or cold a place is from equator.",
+      "7": "Importance of Prime Meridian is that it is the Centre longitude line of 0 degree. It passes from a place called Greenwich in London. We use this line to setup the international standard time for clerks of all countries.",
+      "8": "Globe is a 3D model copy of our planet earth. It is round like a ball and shows exact position of all continents and oceans but in very small scale size so we can see it together.",
+      "9": "Difference between latitudes and longitudes:\n\n1) Latitudes are full circles that seem horizontally from East to west direction. Longitudes are semi-circles that seem vertically from North pole to South pole.\n2) The biggest latitude line is Equator which is 0 degree. The main longitude line is Perum Meridian which is also 0 degree.\n3) latitudes never touch each other because they are parallel. But all longitude meet each other at the top and bottom poles.",
+      "10": "Longitudes are important for calculating time because Earth takes around on its axis and moves 18 degrees in one hour. So every 1 degree of longitude change means a minute difference in time. Places in East see Sun early. So their time is ahead, and places in West are behind.",
+      "11": "Rotation causes day and night because earth is round like a sphere and it spins from west to East. At one time, only half part of earth feels the sun stays so that half has daytime. The back side part is in shadow so it has nighttime. As earth keeps spinning, day changes into night continuously.",
+      "17": "Manuscripts are old historical books that were written by hands on special leaves like palm leaves on back of tree. Because thousands of years ago there were no computers or painting press.",
+      "18": "Historians are actually investigators of past. They are scientists or experts who read old broken scripts, value and ancient sources to write down the story of what happened before us.",
+      "19": "Civilization is an advanced stage of human society where people have nomadic life and form well-planned cities with advanced culture, trading systems, script for writing, and common rules for living.",
+      "20": "Historical sources are highly important because history cannot be written by imagination. Sources give solid proof. If we find Harappan pots on Roman coins, it proves that people lived there and did trading. Sources are like eyes for studying past events.",
+      "21": "\"India; that is Bharat\" means our country has two official names in our daily book. India name comes from the Sindhu driver which Ganes called Indus. Bharat name is very old traditional name which comes from the Rigveda tribe called Bharatas who lived in North-West.",
+      "22": "Three features of early Indian civilization.\n\n1) They had planned citadels and lower towns made of uniform burnt bricks.\n2) They had grid pattern street systems where roads cut nicely at 90 degree.\n3) They worshipped natural forces and figures like Mother Goddess and Pashupati seal.",
+      "23": "Timelines are important because history has thousands of events and without timeline everything will mix up. It helps to track what happened first and what happened next using BC (Before Christ) and AD (Anno Domini). Historical sources like inscription on stones on old monuments are important because they tell us the truth about kings, their dates, and their kingdoms. Without timelines we cannot understand the development of human life, and without sources we have no evidence.",
+      "24": "Features of the Indus valley civilisation:\n\nThe Indus valley was a very great bronze age civilization. Main feature are:\n\n- Granaries: They built huge brick stonehouses to keep extra grains safe for emergency.\n- Drainage: Every house was connected to street drains which were covered with stone slabs so dirty water goes outside city safely.\n- Trade: They had dockyard at lotnal and did business with mesopotamia using siels.\n- Weight system: They used accurate weights made of stones for buying and selling things honestly.",
+      "30": "Joint family is a traditional Indian family structure where grand parents, uncles, aunts, parents and brother sisters share a common house, property and cook food in the same kitchen.",
+      "31": "Gram Sabha is a general assembly meeting of a village where every person who is above 18 years old and has water and can participate to check what work panchayat is doing.",
+      "32": "Democracy means a government of our peoples, by our people and for the people. In this system, citizens hold the real power and they select their own leaders through voting system.",
+      "33": "Role of family in society.\n\nFamily is the foundational unit. It raises children and teaches them basic moral behavior, language, and culture. If families are stable and teach good values, then the whole society become safe, disciplined, and progressive.",
+      "34": "Functions of Gram Panchayat:\n\n- Constructing and maintaining village infrastructure like roads, drainage, and wells.\n- Lurying and collecting local taxes from houses and markets.\n- Executing government schemes related to employment and education in the village.",
+      "36": "Family and community are both essential for human life. family fulfils our primary emotional, financial, and physical needs from childhood. Community fulfills our secondary social needs like safety, celebrating festivals together, and running schools or markets. Human beings are social animals and cannot survive alone. While family gives us identity, community gives us a sense of belonging and teaches cooperation.",
+      "37": "Panchayati Raj strengthens democracy because it brings grassroot democracy directly to rural areas. instead of ministries in New Delhi making decisions for a small village, the villagers themselves choose their Sarpanch and Panchas. This allows local people to solve local problems like drinking water, village schools, and street lights immediately. It teaches ordinary poor citizens how to vote, questions authority, and handle power, making democracy a real practice at the lowest level."
+    }
+  },
+  "overall_feedback": "You have shown strong understanding across all three sections. Your MCQ performance was excellent, and many of your written answers were clear, organized, and based on real understanding rather than guesswork.\n\nIn Geography, you did especially well on the Prime Meridian, globe, differences between latitudes and longitudes, and Earth’s rotation causing day and night. In History, your answers on historical sources, timelines, and the Indus Valley Civilisation were among your strongest responses. In Civics, you showed good understanding of family, democracy, Gram Panchayat, and how local government works.\n\nYour main area for improvement is factual precision. A few answers showed the right idea but included incorrect details. For example, latitudes measure distance north or south of the Equator, not temperature directly. In time calculation, remember that the Earth rotates 360° in 24 hours, which means 15° in 1 hour and 1° in 4 minutes. Also, civilization refers to settled and organized human life, not nomadic life. These small factual errors can reduce marks even when your overall explanation is good.\n\nYou should also try to use textbook keywords more carefully. Terms such as Prime Meridian, voter, Lothal, seals, and the identity meaning of “India, that is Bharat” should be written more accurately. In longer answers, adding one or two formal textbook points would make your responses even stronger—for example, the three-tier structure of Panchayati Raj and the role of the Gram Sabha.\n\nOne important exam tip: never leave a question blank. Question 35 was unanswered, and even 2–3 simple points could have earned you marks.\n\nOverall, this was a strong paper with good concepts and confident writing. With better accuracy, cleaner wording, and full attempts to every question, you can score even higher.",
+  "finalVerification": {
+    "corrections": [
+      {
+        "reason": "The student correctly explains that manuscripts are old records/books written by hand and mentions palm leaves as the writing material. For this 2-mark very short answer, that covers the essential expected points.",
+        "question_id": "17",
+        "original_marks_awarded": 1,
+        "corrected_marks_awarded": 2
+      }
+    ]
+  },
+  "subjectiveResults": [
+    {"max_marks":2,"strengths":["You correctly identified the shape and direction of latitudes."],"confidence":0.95,"correctness":"partially_correct","question_id":"Q6","improvements":["State that latitudes measure distance north or south of the Equator.","Avoid confusing latitude with climate or temperature."],"marks_awarded":1,"question_text":"What are latitudes?","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":0}],"overall_feedback":"Good start: you correctly described latitudes as imaginary horizontal lines, but you should say they measure distance north or south of the Equator, not temperature.","key_points_covered":["Latitudes are imaginary lines.","They run horizontally from east to west on the globe."],"key_points_missing":["Latitudes measure the distance north or south of the Equator.","They are measured in degrees.","Latitudes are not used to show how hot or cold a place is."]},
+    {"max_marks":2,"strengths":["You included both the location and practical importance of the Prime Meridian."],"confidence":0.92,"correctness":"correct","question_id":"Q7","improvements":["Also mention that it divides the Earth into the Eastern and Western Hemispheres."],"marks_awarded":2,"question_text":"What is the importance of the Prime Meridian?","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Well answered. You correctly explained that the Prime Meridian is 0° longitude at Greenwich and that it is important for standard time.","key_points_covered":["The Prime Meridian is 0° longitude.","It passes through Greenwich.","It is important for time calculation/standard time."],"key_points_missing":["It divides the Earth into the Eastern and Western Hemispheres."]},
+    {"max_marks":2,"strengths":["You used clear and accurate descriptive language."],"confidence":0.96,"correctness":"correct","question_id":"Q8","improvements":["You could also mention that a globe shows countries as well as continents and oceans."],"marks_awarded":2,"question_text":"What is a globe?","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Very good answer. You clearly explained that a globe is a round 3D model of Earth showing its features in correct positions.","key_points_covered":["A globe is a spherical/3D model of Earth.","It shows continents and oceans in correct relative positions.","It is a small-scale representation."],"key_points_missing":["Countries are not mentioned explicitly."]},
+    {"max_marks":3,"strengths":["You gave several correct differences, not just one.","Your answer is well organized in numbered points."],"confidence":0.91,"correctness":"correct","question_id":"Q9","improvements":["Add the measurement function: latitudes measure north/south distance and longitudes measure east/west distance.","Correct the spelling of Prime Meridian."],"marks_awarded":3,"question_text":"Difference between latitudes and longitudes.","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"explanation","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Good comparative answer. You clearly explained direction and structure differences between latitudes and longitudes; adding what each one measures would make it even stronger.","key_points_covered":["Latitudes run east to west.","Longitudes run north to south.","Equator is the main latitude at 0°.","Prime Meridian is the main longitude at 0°.","Latitudes are parallel and longitudes meet at the poles."],"key_points_missing":["Latitudes measure distance north or south of the Equator.","Longitudes measure distance east or west of the Prime Meridian."]},
+    {"max_marks":3,"strengths":["You understood the main idea that longitude affects local time."],"confidence":0.95,"correctness":"partially_correct","question_id":"Q10","improvements":["Use the correct figures: Earth rotates 15° in one hour, not 18°.","State that 1° longitude equals about 4 minutes difference in time."],"marks_awarded":2,"question_text":"Why are longitudes important for calculating time?","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"explanation","max_marks":1,"awarded_marks":0},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"You understood the main concept, but your numerical explanation is incorrect. Learn the correct rotation-time relation to make your answer accurate.","key_points_covered":["Longitudes are linked to time differences.","Places in the east are ahead of places in the west."],"key_points_missing":["The Earth rotates 360° in 24 hours.","The correct rate is 15° per hour.","A change of 1° longitude means about 4 minutes difference in time.","Standard time is based on a selected longitude."]},
+    {"max_marks":3,"strengths":["Your explanation is scientifically correct and easy to follow."],"confidence":0.97,"correctness":"correct","question_id":"Q11","improvements":["You could make the answer even better by adding that Earth completes one rotation in about 24 hours."],"marks_awarded":3,"question_text":"How does Earth's rotation cause day and night?","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"explanation","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Excellent answer. You clearly explained how Earth's rotation makes one half of the planet experience day and the other half night.","key_points_covered":["Earth rotates on its axis.","It rotates from west to east.","The side facing the Sun has day.","The side away from the Sun has night.","Continuous rotation causes day and night."],"key_points_missing":["The 24-hour rotation period is not mentioned."]},
+    {"max_marks":2,"strengths":["You remembered that manuscripts were written by hand and often on leaves."],"confidence":0.9,"correctness":"partially_correct","question_id":"Q17","improvements":["Define a manuscript as a handwritten record of the past, not just old books.","End by mentioning that manuscripts preserve valuable historical information."],"marks_awarded":2,"question_text":"What is a manuscript?","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Partly correct, corrected on final review: manuscripts as handwritten records with palm-leaf material covers the essential points expected for this mark value.","key_points_covered":["Manuscripts are handwritten.","They were written on palm leaves."],"key_points_missing":["A manuscript is a handwritten record of the past.","Manuscripts preserve information about society, culture, and beliefs.","Other materials such as birch bark or paper are not mentioned."]},
+    {"max_marks":2,"strengths":["You captured the main role of historians accurately."],"confidence":0.93,"correctness":"correct","question_id":"Q18","improvements":["Add a few specific examples of sources historians use, such as coins, inscriptions, and tools."],"marks_awarded":2,"question_text":"Who are historians?","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Good answer. You correctly explained that historians study the past by using ancient sources.","key_points_covered":["Historians study or investigate the past.","They use old sources to understand past events."],"key_points_missing":["Specific examples such as coins, tools, inscriptions, and archaeological remains are not fully listed."]},
+    {"max_marks":2,"strengths":["You included several important features such as cities, trade, and writing."],"confidence":0.88,"correctness":"partially_correct","question_id":"Q19","improvements":["Replace 'nomadic life' with 'settled life' because civilizations develop permanent towns and cities.","Add organised government and agriculture to complete the definition."],"marks_awarded":1,"question_text":"What is civilization?","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":0}],"overall_feedback":"You understood that civilization means an advanced society, but avoid saying it is nomadic. Civilizations are usually settled and organized.","key_points_covered":["Civilization is an advanced stage of human society.","It includes cities, trade, writing, culture, and rules."],"key_points_missing":["Civilizations are based on settled life, not nomadic life.","Organised government is not mentioned.","Agriculture supporting towns and cities is not mentioned."]},
+    {"max_marks":3,"strengths":["You explained the importance clearly and used a strong example."],"confidence":0.95,"correctness":"correct","question_id":"Q20","improvements":["Include a wider range of sources such as inscriptions, manuscripts, artefacts, and tools.","Mention that sources also help historians arrange events in chronological order."],"marks_awarded":3,"question_text":"Importance of historical sources.","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"explanation","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Very good answer. You clearly showed that historical sources are necessary evidence for writing history and supported your point with an example.","key_points_covered":["Historical sources provide evidence about the past.","History cannot be written from imagination alone.","Sources help us understand settlement and trade."],"key_points_missing":["More source types such as inscriptions, manuscripts, and tools could be mentioned.","Chronology is not mentioned."]},
+    {"max_marks":3,"strengths":["You attempted to explain the phrase rather than just repeat it."],"confidence":0.86,"correctness":"partially_correct","question_id":"Q21","improvements":["Add that the phrase expresses the identity of our country.","Mention the connection to ancient names and cultural unity."],"marks_awarded":2,"question_text":"Meaning of “India, that is Bharat”.","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"explanation","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":0}],"overall_feedback":"Good attempt. You explained the two names, but the answer should also mention that the phrase reflects the identity and unity of the country.","key_points_covered":["India and Bharat refer to the same country.","The answer attempts to explain the origin of both names."],"key_points_missing":["The phrase reflects the identity of our country.","Ancient names such as Bharatavarsha and Jambudvipa are not mentioned.","The idea of cultural unity across regions is missing."]},
+    {"max_marks":3,"strengths":["You provided exactly three clear features.","Your points are specific and relevant."],"confidence":0.84,"correctness":"correct","question_id":"Q22","improvements":["Include drainage and trade, as these are major Harappan features often expected in textbook answers.","Use the term 'Harappan/Indus civilization' for precision."],"marks_awarded":3,"question_text":"Three features of early Indian civilization.","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"explanation","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Good answer. You listed three relevant features clearly; adding drainage or trade would make it even stronger.","key_points_covered":["Planned towns with citadel and lower town.","Use of uniform baked bricks.","Grid-pattern street system.","Religious beliefs and symbols."],"key_points_missing":["Drainage systems are not mentioned.","Trade networks are not mentioned.","Agriculture supporting urban life is not mentioned."]},
+    {"max_marks":5,"strengths":["You explained both parts of the question fully.","Your answer shows reasoning, not just memorized lines."],"confidence":0.94,"correctness":"correct","question_id":"Q23","improvements":["Add a formal phrase like 'a timeline shows events in chronological order.'","Mention more types of sources, such as manuscripts and archaeological remains."],"marks_awarded":5,"question_text":"Importance of timelines and sources in history.","rubric_scores":[{"category":"definition","max_marks":1,"awarded_marks":1},{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"explanation","max_marks":1,"awarded_marks":1},{"category":"analysis","max_marks":1,"awarded_marks":1},{"category":"structure","max_marks":1,"awarded_marks":1}],"overall_feedback":"Excellent answer. You clearly explained why both timelines and historical sources are necessary for understanding and proving history.","key_points_covered":["Timelines help arrange events in order.","They show what happened earlier and later.","Historical sources provide evidence about the past.","Sources help understand rulers, dates, and events.","Both timelines and sources are necessary for understanding historical development."],"key_points_missing":["Examples of more varied sources like manuscripts, fossils, and archaeological remains could be added."]},
+    {"max_marks":5,"strengths":["You included several strong and specific features.","Your bullet-point format makes the answer very clear."],"confidence":0.9,"correctness":"correct","question_id":"Q24","improvements":["Add city planning features such as wide streets, upper and lower towns, and fortifications.","Correct spellings such as Lothal and seals."],"marks_awarded":5,"question_text":"Features of the Indus Valley Civilisation.","rubric_scores":[{"category":"definition","max_marks":1,"awarded_marks":1},{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"explanation","max_marks":1,"awarded_marks":1},{"category":"analysis","max_marks":1,"awarded_marks":1},{"category":"structure","max_marks":1,"awarded_marks":1}],"overall_feedback":"Very good answer. You wrote several important features clearly and explained their uses well.","key_points_covered":["Indus Valley Civilization was an ancient Bronze Age civilization.","Granaries were an important feature.","Advanced drainage systems existed.","Trade with other regions took place.","Standardized weights were used."],"key_points_missing":["Upper and lower towns are not mentioned.","Agriculture is not mentioned.","Fortifications and overall city planning are not mentioned directly."]},
+    {"max_marks":2,"strengths":["Your answer is clear and detailed."],"confidence":0.95,"correctness":"correct","question_id":"Q30","improvements":["You can add 'several generations living together' to make the definition more textbook-like."],"marks_awarded":2,"question_text":"What is a joint family?","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Good answer. You correctly described a joint family as a large family living together and sharing a common household.","key_points_covered":["Several generations and relatives live together.","A joint family shares one household.","The idea of common living is clear."],"key_points_missing":["Cousins are not mentioned explicitly."]},
+    {"max_marks":2,"strengths":["You connected Gram Sabha with public participation in village governance."],"confidence":0.8,"correctness":"correct","question_id":"Q31","improvements":["Replace the unclear phrase 'has water' with 'has voting rights' or 'is enrolled as a voter.'"],"marks_awarded":2,"question_text":"What is Gram Sabha?","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Well done. You correctly explained Gram Sabha as the village body of adult members who can participate in local governance.","key_points_covered":["Gram Sabha is a village assembly.","Adult members above 18 participate.","It is linked to village governance and oversight."],"key_points_missing":["Members are enrolled as voters; this is only implied, not clearly stated."]},
+    {"max_marks":2,"strengths":["You used a classic and accurate definition of democracy."],"confidence":0.97,"correctness":"correct","question_id":"Q32","improvements":["You can also mention that elected representatives govern and make laws on behalf of the people."],"marks_awarded":2,"question_text":"Define democracy.","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Very good. You clearly defined democracy and explained the role of voting in it.","key_points_covered":["Democracy is government by the people.","Citizens have power.","Leaders are chosen through voting."],"key_points_missing":["The role of elected representatives making laws is not stated explicitly."]},
+    {"max_marks":3,"strengths":["Your answer is concise but complete.","You connected family values to the wider society effectively."],"confidence":0.95,"correctness":"correct","question_id":"Q33","improvements":["Add ideas like love, care, cooperation, and responsibility to match the textbook more closely."],"marks_awarded":3,"question_text":"Role of family in society.","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"explanation","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Good answer. You clearly explained that the family shapes children and helps society become disciplined and progressive.","key_points_covered":["Family is the basic unit of society.","Family raises children.","Family teaches values, language, and culture.","Strong families help build a better society."],"key_points_missing":["Love, care, cooperation, and interdependence are not mentioned explicitly.","Specific values such as service and sacrifice are not mentioned."]},
+    {"max_marks":3,"strengths":["You listed practical functions accurately.","Your answer is clear and direct."],"confidence":0.94,"correctness":"correct","question_id":"Q34","improvements":["Add that Gram Panchayat is accountable to the people and works under local democratic supervision."],"marks_awarded":3,"question_text":"Functions of Gram Panchayat.","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"explanation","max_marks":1,"awarded_marks":1},{"category":"conclusion","max_marks":1,"awarded_marks":1}],"overall_feedback":"Well answered. You correctly described important village-level functions of the Gram Panchayat.","key_points_covered":["Maintains village infrastructure.","Handles local taxes.","Implements government schemes at village level."],"key_points_missing":["Water supply and sanitation could be mentioned more explicitly.","Accountability to the people/Gram Sabha is not mentioned."]},
+    {"max_marks":3,"strengths":[],"confidence":0.99,"correctness":"incorrect","question_id":"Q35","improvements":["Attempt the question even with 2-3 simple points.","Mention that grassroots democracy allows people to participate directly in local decisions."],"marks_awarded":0,"question_text":"Importance of grassroots democracy.","rubric_scores":[{"category":"concept","max_marks":1,"awarded_marks":0},{"category":"explanation","max_marks":1,"awarded_marks":0},{"category":"conclusion","max_marks":1,"awarded_marks":0}],"overall_feedback":"No answer was written. Try to attempt every question, even briefly, to earn some marks.","key_points_covered":[],"key_points_missing":["Grassroots democracy brings governance closer to the people.","Villagers participate directly in decision-making through Panchayati Raj.","It strengthens participation, accountability, and development at village, block, and district levels."]},
+    {"max_marks":5,"strengths":["You explained both family and community in a balanced way.","Your answer shows understanding, not just memorization."],"confidence":0.9,"correctness":"partially_correct","question_id":"Q36","improvements":["Begin with a direct textbook-like statement defining the role of family and community in shaping individuals.","Add that these institutions teach responsibility, moral values, and social awareness."],"marks_awarded":4,"question_text":"Importance of family and community.","rubric_scores":[{"category":"definition","max_marks":1,"awarded_marks":0},{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"explanation","max_marks":1,"awarded_marks":1},{"category":"analysis","max_marks":1,"awarded_marks":1},{"category":"structure","max_marks":1,"awarded_marks":1}],"overall_feedback":"Good answer. You clearly explained how family and community support human life, but adding a textbook-style opening definition would improve it further.","key_points_covered":["Family provides emotional, physical, and financial support.","Community provides social support and participation.","Family gives identity.","Community gives belonging and teaches cooperation."],"key_points_missing":["A direct textbook-style definition/key term statement is missing.","Moral guidance, responsibility, and socially aware citizenship are not stated explicitly."]},
+    {"max_marks":5,"strengths":["You explained the democratic value of local participation very well.","Your examples make the answer strong and realistic."],"confidence":0.93,"correctness":"partially_correct","question_id":"Q37","improvements":["Start by defining Panchayati Raj as a three-tier system at village, block, and district levels.","Add the role of the Gram Sabha and accountability to the people."],"marks_awarded":4,"question_text":"How Panchayati Raj strengthens democracy.","rubric_scores":[{"category":"definition","max_marks":1,"awarded_marks":0},{"category":"concept","max_marks":1,"awarded_marks":1},{"category":"explanation","max_marks":1,"awarded_marks":1},{"category":"analysis","max_marks":1,"awarded_marks":1},{"category":"structure","max_marks":1,"awarded_marks":1}],"overall_feedback":"Very good answer. You clearly showed how Panchayati Raj makes democracy real in villages, but add the formal three-tier definition for full completeness.","key_points_covered":["Panchayati Raj brings democracy closer to villagers.","Villagers elect local leaders.","Local problems are solved locally.","It encourages participation and democratic practice."],"key_points_missing":["Panchayati Raj as a three-tier system is not mentioned.","The role of Gram Sabha is not mentioned.","Block and district levels are not mentioned explicitly.","Accountability is not mentioned directly."]}
+  ],
+  "subjectiveSummary": {
+    "total_max_marks": 65,
+    "overall_feedback": "You have a strong overall understanding of Social Science and wrote many clear, well-structured answers.",
+    "total_awarded_marks": 55
+  }
+};
+
+/* State variable */
+let currentReportData = null;
+
+/* Helper Utilities */
+function esc(s) {
+  if (s === null || s === undefined) return "";
+  return String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+}
+
+function correctnessLabel(c) {
+  return { correct: "Correct", partially_correct: "Partial", incorrect: "Incorrect" }[c] || c;
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3000);
+}
+
+/* ============================================================
+   JSON PARSING & NORMALIZATION
+   ============================================================ */
+function parseReportJSON(input) {
+  if (!input || !input.trim()) {
+    throw new Error("Input string is empty.");
+  }
+  let str = input.trim();
+
+  // Strip JavaScript variable assignment if user pasted `const REPORT_DATA = {...}`
+  str = str.replace(/^(const|let|var)\s+REPORT_DATA\s*=\s*/i, '');
+  str = str.replace(/^REPORT_DATA\s*=\s*/i, '');
+  str = str.replace(/;\s*$/, '');
+
+  // Attempt standard JSON parse
+  try {
+    return JSON.parse(str);
+  } catch (e1) {
+    // Attempt parsing as JS Object literal (for unquoted keys or single quotes)
+    try {
+      const relaxedParse = new Function('return (' + str + ')');
+      const obj = relaxedParse();
+      if (obj && typeof obj === 'object') return obj;
+    } catch (e2) {
+      throw new Error("Syntax Error in JSON: " + e1.message);
+    }
+  }
+  throw new Error("Invalid JSON or object shape.");
+}
+
+function normalizeReportData(raw) {
+  let data = raw;
+  if (typeof data === 'string') {
+    data = parseReportJSON(data);
+  }
+  if (!data || typeof data !== 'object') {
+    throw new Error("Data must be a valid JSON object.");
+  }
+
+  // Handle flat student answers vs nested studentAnswers.byQuestionId
+  let answersObj = {};
+  if (data.studentAnswers) {
+    if (data.studentAnswers.byQuestionId && typeof data.studentAnswers.byQuestionId === 'object') {
+      answersObj = data.studentAnswers.byQuestionId;
+    } else if (typeof data.studentAnswers === 'object') {
+      answersObj = data.studentAnswers;
+    }
+  } else if (data.student_answers) {
+    answersObj = data.student_answers;
+  }
+
+  return {
+    summary: data.summary || data.Summary || {},
+    mcqResults: data.mcqResults || data.mcq_results || [],
+    studentAnswers: { byQuestionId: answersObj },
+    subjectiveResults: data.subjectiveResults || data.subjective_results || [],
+    subjectiveSummary: data.subjectiveSummary || data.subjective_summary || {},
+    overall_feedback: data.overall_feedback || data.overallFeedback || data.feedback || "",
+    finalVerification: data.finalVerification || data.final_verification || null
+  };
+}
+
+/* ============================================================
+   SVG & HTML BUILDERS
+   ============================================================ */
+function scoreDialSVG(pct) {
+  const r = 46, c = 2 * Math.PI * r;
+  const offset = c - (Math.min(100, Math.max(0, pct)) / 100) * c;
+  return `
+  <svg width="112" height="112" viewBox="0 0 112 112">
+    <circle cx="56" cy="56" r="${r}" fill="none" stroke="var(--line)" stroke-width="10"/>
+    <circle cx="56" cy="56" r="${r}" fill="none" stroke="var(--gold)" stroke-width="10"
+      stroke-dasharray="${c}" stroke-dashoffset="${offset}" stroke-linecap="round"/>
+  </svg>`;
+}
+
+function rubricBar(rubric) {
+  if (!rubric || !rubric.length) return "";
+  const bars = rubric.map(r => {
+    const w = (1 / rubric.length * 100).toFixed(2);
+    const hit = r.awarded_marks >= r.max_marks;
+    return `<div class="seg ${hit ? 'hit' : 'miss'}" style="width:${w}%"></div>`;
+  }).join("");
+  const labels = rubric.map(r =>
+    `<span><b>${r.awarded_marks}/${r.max_marks}</b> ${esc(r.category)}</span>`
+  ).join("");
+  return `<div class="rubric-bar">${bars}</div><div class="rubric-labels">${labels}</div>`;
+}
+
+function mcqCells(mcqResults) {
+  return mcqResults.map(m => {
+    const ok = m.is_correct;
+    return `
+    <div class="mcq-cell ${ok ? 'correct' : 'wrong'}">
+      <div class="q">Q${esc(m.question_id)}</div>
+      <div class="opt">${esc(m.student_option || m.answer || '—')}</div>
+      ${ok ? "" : `<div class="given">correct: ${esc(m.correct_option || '—')}</div>`}
+    </div>`;
+  }).join("");
+}
+
+function questionCard(q, studentAnswer) {
+  const badgeClass = q.correctness || (q.marks_awarded >= q.max_marks ? 'correct' : q.marks_awarded > 0 ? 'partially_correct' : 'incorrect');
+  const strengths = (q.strengths || []).map(s => `<li>${esc(s)}</li>`).join("") || "<li>—</li>";
+  const improvements = (q.improvements || []).map(s => `<li>${esc(s)}</li>`).join("") || "<li>—</li>";
+  return `
+  <div class="qcard">
+    <div class="qcard-head">
+      <div>
+        <span class="qid">${esc(q.question_id)}</span>
+        <h3>${esc(q.question_text || q.title || 'Question')}</h3>
+      </div>
+      <div class="marks-badge ${badgeClass}">${q.marks_awarded ?? 0}/${q.max_marks ?? 0} · ${correctnessLabel(q.correctness)}</div>
+    </div>
+
+    ${rubricBar(q.rubric_scores)}
+
+    ${studentAnswer ? `
+    <details class="answer-toggle">
+      <summary>View student's answer</summary>
+      <div class="student-answer"><b>Student wrote</b>${esc(studentAnswer)}</div>
+    </details>` : ""}
+
+    <div class="two-col">
+      <div>
+        <div class="col-title good">Strengths</div>
+        <ul class="pt-list">${strengths}</ul>
+      </div>
+      <div>
+        <div class="col-title bad">To improve</div>
+        <ul class="pt-list">${improvements}</ul>
+      </div>
+    </div>
+
+    ${q.overall_feedback ? `<div class="feedback-line">${esc(q.overall_feedback)}</div>` : ''}
+  </div>`;
+}
+
+/* ============================================================
+   RENDER REPORT FUNCTION
+   ============================================================ */
+function renderReport(rawReportData) {
+  const data = normalizeReportData(rawReportData);
+  currentReportData = data;
+
+  const s = data.summary || {};
+  const answers = (data.studentAnswers && data.studentAnswers.byQuestionId) || {};
+  const mcq = data.mcqResults || [];
+  const subs = data.subjectiveResults || [];
+  const subSummary = data.subjectiveSummary || {};
+
+  const percentage = s.percentage ?? (s.total_max_marks ? Math.round((s.total_awarded_marks / s.total_max_marks) * 100) : 0);
+  const studentMetaText = [
+    s.student_name ? `Student: ${esc(s.student_name)}` : null,
+    s.subject ? `Subject: ${esc(s.subject)}` : null,
+    s.exam_name ? `Exam: ${esc(s.exam_name)}` : null,
+    `Total questions: ${s.total_questions ?? (mcq.length + subs.length)}`
+  ].filter(Boolean).join(" • ");
+
+  const html = `
+    <div class="masthead">
+      <div class="masthead-top">
+        <div class="brand-container">
+          <img src="logo_g.png" alt="Gradified Logo" class="brand-logo" onerror="this.style.display='none'; document.getElementById('brandFallback').style.display='inline';">
+          <span id="brandFallback" style="display:none; font-weight:bold; font-size:20px; color:var(--navy);">[G]</span>
+          <div class="brand-text">
+            <span class="powered-by">Powered by</span>
+            <span class="brand-name">Gradified</span>
+          </div>
+        </div>
+        <div class="meta">
+          <div>${studentMetaText}</div>
+          <div>Generated for review &amp; sharing</div>
+        </div>
+      </div>
+      <div class="masthead-main">
+        <div>
+          <div class="eyebrow">Evaluated Answer Sheet</div>
+          <h1>Assessment Report</h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-row">
+      <div class="dial-wrap">
+        ${scoreDialSVG(percentage)}
+        <div class="dial-pct"><b>${percentage}%</b><span>Overall</span></div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat"><div class="num">${s.total_awarded_marks ?? "—"} / ${s.total_max_marks ?? "—"}</div><div class="lbl">Marks awarded</div></div>
+        <div class="stat"><div class="num">${mcq.length}</div><div class="lbl">MCQs attempted</div></div>
+        <div class="stat"><div class="num">${subs.length}</div><div class="lbl">Written answers</div></div>
+      </div>
+    </div>
+
+    ${data.overall_feedback ? `
+    <div class="note">
+      <div class="eyebrow">Teacher's note</div>
+      ${data.overall_feedback.split(/\n\n+/).map(p => `<p>${esc(p)}</p>`).join("")}
+    </div>` : ""}
+
+    ${mcq.length ? `
+    <section>
+      <div class="section-title">Multiple Choice Questions <span class="tally">${mcq.filter(m => m.is_correct).length}/${mcq.length} correct</span></div>
+      <div class="mcq-grid">${mcqCells(mcq)}</div>
+    </section>` : ""}
+
+    ${subs.length ? `
+    <section>
+      <div class="section-title">Written Answers <span class="tally">${subSummary.total_awarded_marks ?? ""}/${subSummary.total_max_marks ?? ""} marks</span></div>
+      ${subs.map(q => questionCard(q, answers[q.question_id.replace(/^Q/i, '')] || answers[q.question_id])).join("")}
+    </section>` : ""}
+
+    <footer>Report generated automatically from evaluation data • Powered by Gradified</footer>
+  `;
+
+  document.getElementById("sheet").innerHTML = html;
+}
+
+/* ============================================================
+   MODAL & USER INTERACTION LOGIC
+   ============================================================ */
+function openJsonModal() {
+  const modal = document.getElementById("jsonModal");
+  const textarea = document.getElementById("jsonTextArea");
+  document.getElementById("jsonError").style.display = "none";
+  
+  if (currentReportData) {
+    textarea.value = JSON.stringify(currentReportData, null, 2);
+  } else {
+    textarea.value = JSON.stringify(DEMO_REPORT_DATA, null, 2);
+  }
+  
+  modal.classList.add("active");
+  textarea.focus();
+}
+
+function closeJsonModal() {
+  document.getElementById("jsonModal").classList.remove("active");
+}
+
+function handleModalBackdropClick(e) {
+  if (e.target.id === "jsonModal") closeJsonModal();
+}
+
+function applyJsonFromModal() {
+  const textarea = document.getElementById("jsonTextArea");
+  const errBanner = document.getElementById("jsonError");
+  errBanner.style.display = "none";
+
+  try {
+    const parsed = parseReportJSON(textarea.value);
+    renderReport(parsed);
+    saveToLocalStorage(parsed);
+    updateStatusTag("Custom JSON Loaded");
+    closeJsonModal();
+    showToast("Report updated successfully!");
+  } catch (err) {
+    errBanner.textContent = "Error: " + err.message;
+    errBanner.style.display = "block";
+  }
+}
+
+function loadSampleIntoModal() {
+  document.getElementById("jsonTextArea").value = JSON.stringify(DEMO_REPORT_DATA, null, 2);
+  document.getElementById("jsonError").style.display = "none";
+}
+
+function triggerFileInput() {
+  document.getElementById("fileInput").click();
+}
+
+function handleFileUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const parsed = parseReportJSON(e.target.result);
+      renderReport(parsed);
+      saveToLocalStorage(parsed);
+      updateStatusTag(`File: ${file.name}`);
+      showToast(`Loaded ${file.name}!`);
+    } catch (err) {
+      alert("Could not load file: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetToDemoData() {
+  localStorage.removeItem("GRADIFIED_SAVED_REPORT");
+  renderReport(DEMO_REPORT_DATA);
+  updateStatusTag("Sample Evaluation Data");
+  showToast("Reset to default sample data");
+}
+
+function updateStatusTag(text) {
+  document.getElementById("statusText").textContent = text;
+}
+
+function saveToLocalStorage(data) {
+  try {
+    localStorage.setItem("GRADIFIED_SAVED_REPORT", JSON.stringify(data));
+  } catch (e) {
+    console.warn("Could not save to localStorage", e);
+  }
+}
+
+function loadFromLocalStorage() {
+  try {
+    const saved = localStorage.getItem("GRADIFIED_SAVED_REPORT");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      renderReport(parsed);
+      updateStatusTag("Saved Local Report");
+      return true;
+    }
+  } catch (e) {
+    console.warn("Could not load from localStorage", e);
+  }
+  return false;
+}
+
+/* ============================================================
+   EXTERNAL PROGRAMMATIC LOADING (URL, PostMessage, Window Call)
+   ============================================================ */
+// Window helper so external scripts/apps can call window.loadReportData(json) directly
+window.loadReportData = function(jsonOrObj) {
+  try {
+    const parsed = typeof jsonOrObj === 'string' ? parseReportJSON(jsonOrObj) : jsonOrObj;
+    renderReport(parsed);
+    saveToLocalStorage(parsed);
+    updateStatusTag("Programmatically Loaded");
+    showToast("Report loaded via application!");
+  } catch (err) {
+    console.error("Failed to load report data:", err);
+  }
+};
+
+// PostMessage listener so parent window/iframe can send report data
+window.addEventListener("message", function(event) {
+  if (event.data && (event.data.type === "LOAD_REPORT_DATA" || event.data.REPORT_DATA)) {
+    const payload = event.data.REPORT_DATA || event.data.data;
+    if (payload) window.loadReportData(payload);
+  }
+});
+
+// Drag and drop JSON file onto window
+window.addEventListener("dragover", e => e.preventDefault());
+window.addEventListener("drop", e => {
+  e.preventDefault();
+  if (e.dataTransfer.files && e.dataTransfer.files.length) {
+    const file = e.dataTransfer.files[0];
+    if (file.name.endsWith(".json") || file.name.endsWith(".txt")) {
+      const reader = new FileReader();
+      reader.onload = ev => window.loadReportData(ev.target.result);
+      reader.readAsText(file);
+    }
+  }
+});
+
+/* ============================================================
+   INIT ON PAGE LOAD & PARAMETER PARSING
+   ============================================================ */
+// Helper to decode Base64 safely (handles Unicode / UTF-8)
+function decodeBase64Utf8(str) {
+  try {
+    const bytes = Uint8Array.from(atob(str), c => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  } catch (e) {
+    return atob(str); // Fallback
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const hash = window.location.hash ? window.location.hash.substring(1) : "";
+  const hashParams = new URLSearchParams(hash);
+
+  const b64Param = urlParams.get("b64") || urlParams.get("base64") || hashParams.get("b64") || hashParams.get("base64");
+  const dataParam = urlParams.get("data") || urlParams.get("json") || hashParams.get("data") || hashParams.get("json");
+  const fetchUrlParam = urlParams.get("url") || urlParams.get("src") || urlParams.get("fetch") || hashParams.get("url");
+  const reportIdParam = urlParams.get("id") || urlParams.get("reportId");
+  const tokenParam = urlParams.get("token") || urlParams.get("auth") || urlParams.get("bearer");
+
+  // Helper for fetch headers
+  const fetchHeaders = {};
+  if (tokenParam) {
+    fetchHeaders["Authorization"] = tokenParam.startsWith("Bearer ") ? tokenParam : `Bearer ${tokenParam}`;
+  }
+
+  // Option A: Report ID parameter (fetches directly from Gradified API endpoint)
+  if (reportIdParam) {
+    const apiHost = urlParams.get("apiHost") || "https://api.gradified.in";
+    const apiUrl = `${apiHost}/api/v1/report/${encodeURIComponent(reportIdParam)}`;
+    updateStatusTag(`Loading Report #${reportIdParam.substring(0,8)}...`);
+    fetch(apiUrl, { headers: fetchHeaders })
+      .then(res => {
+        if (!res.ok) throw new Error("API returned HTTP status " + res.status);
+        return res.json();
+      })
+      .then(data => {
+        window.loadReportData(data);
+        updateStatusTag(`Report #${reportIdParam.substring(0,8)}`);
+        showToast("Report loaded!");
+      })
+      .catch(err => {
+        console.error("Error fetching report ID:", err);
+        updateStatusTag("Fetch error");
+        alert("Could not load report ID " + reportIdParam + ": " + err.message);
+      });
+    return;
+  }
+
+  // Option B: Remote API fetch URL
+  if (fetchUrlParam) {
+    updateStatusTag("Fetching report from API...");
+    fetch(fetchUrlParam, { headers: fetchHeaders })
+      .then(res => {
+        if (!res.ok) throw new Error("HTTP status " + res.status);
+        return res.json();
+      })
+      .then(data => {
+        window.loadReportData(data);
+        showToast("Loaded from URL!");
+      })
+      .catch(err => {
+        console.error("Error fetching report URL:", err);
+        updateStatusTag("Fetch error");
+        alert("Could not load report from API: " + err.message);
+      });
+    return;
+  }
+
+  // Option A: Base64 string in URL
+  if (b64Param) {
+    try {
+      const decodedJson = decodeBase64Utf8(decodeURIComponent(b64Param));
+      window.loadReportData(decodedJson);
+      return;
+    } catch(e) {
+      console.error("Failed to parse Base64 URL param", e);
+    }
+  }
+
+  // Option B: Plain or URL-encoded JSON in URL
+  if (dataParam) {
+    try {
+      const decoded = decodeURIComponent(dataParam);
+      window.loadReportData(decoded);
+      return;
+    } catch(e) {
+      console.error("Failed to parse JSON URL param", e);
+    }
+  }
+
+  // Option C: Fetch from remote JSON API endpoint
+  if (fetchUrlParam) {
+    updateStatusTag("Fetching report from API...");
+    fetch(fetchUrlParam)
+      .then(res => {
+        if (!res.ok) throw new Error("HTTP error " + res.status);
+        return res.json();
+      })
+      .then(data => {
+        window.loadReportData(data);
+        showToast("Loaded from URL!");
+      })
+      .catch(err => {
+        console.error("Error fetching report URL:", err);
+        updateStatusTag("Fetch error");
+        alert("Could not load report from API: " + err.message);
+      });
+    return;
+  }
+
+  // Option D: Handshake with window.opener (if opened via window.open)
+  if (window.opener) {
+    try {
+      window.opener.postMessage({ type: "REPORT_VIEWER_READY" }, "*");
+    } catch(e) {}
+  }
+
+  // Fallback: Load from localStorage or Demo Data
+  if (!loadFromLocalStorage()) {
+    renderReport(DEMO_REPORT_DATA);
+  }
+});
+</script>
+</body>
+</html>
