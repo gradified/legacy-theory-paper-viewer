@@ -8,7 +8,9 @@
 <link rel="shortcut icon" type="image/png" href="logo_g.png">
 <link rel="apple-touch-icon" href="logo_g.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- html2pdf.js for direct PDF export with custom filenames -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <style>
   :root {
     --ink: #1b2431;
@@ -40,52 +42,90 @@
     overflow-x: hidden;
   }
 
-  /* ---------- Top Action Toolbar ---------- */
+  /* ---------- Top Action Toolbar / Navbar ---------- */
   .toolbar-wrapper {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--line);
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+    transition: all 0.2s ease;
   }
   .toolbar {
-    max-width: 920px;
+    max-width: 880px;
     margin: 0 auto;
-    padding: 12px 24px;
+    padding: 10px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
+    gap: 16px;
   }
   .toolbar-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
   .data-status-tag {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    background: var(--paper);
+    gap: 8px;
+    padding: 5px 14px;
+    background: rgba(247, 245, 240, 0.8);
     border: 1px solid var(--line);
-    border-radius: 20px;
+    border-radius: 30px;
     font-size: 12px;
-    color: var(--ink-soft);
-    font-weight: 500;
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
   .status-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    animation: statusPulse 2s infinite ease-in-out;
+  }
+  @keyframes statusPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.15); opacity: 0.75; }
   }
   .toolbar-right {
     display: flex;
     align-items: center;
     gap: 10px;
+  }
+  .btn-print {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    background: var(--navy);
+    color: #ffffff;
+    border: 1px solid var(--navy-deep);
+    box-shadow: 0 2px 6px rgba(31, 53, 80, 0.15);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-print:hover {
+    background: var(--navy-deep);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(19, 34, 52, 0.25);
+  }
+  .btn-print:active {
+    transform: translateY(0);
+  }
+  .btn-print svg {
+    width: 15px;
+    height: 15px;
+    fill: currentColor;
   }
   .btn {
     display: inline-flex;
@@ -750,12 +790,13 @@
     <div class="toolbar-left">
       <div class="data-status-tag" id="statusTag">
         <span class="status-dot"></span>
-        <span id="statusText">Sample Evaluation Data</span>
+        <span id="statusText">Assessment Evaluation</span>
       </div>
     </div>
     <div class="toolbar-right">
-      <button class="btn btn-primary" onclick="window.print()">
-        <span>🖨️ Print / Save as PDF</span>
+      <button class="btn-print" onclick="downloadPDF()">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        <span>Download PDF</span>
       </button>
     </div>
   </div>
@@ -1275,6 +1316,63 @@ window.addEventListener("drop", e => {
   }
 });
 
+let currentReportId = null;
+
+function triggerFileInput() {
+  document.getElementById("fileInput").click();
+}
+
+function getReportFilename(isMath) {
+  let id = currentReportId;
+  if (!id) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const hashRaw = window.location.hash ? window.location.hash.replace(/^#+/, '').replace(/^\/+/, '').replace(/^\?+/, '') : "";
+    const hashParams = new URLSearchParams(hashRaw);
+    id = urlParams.get("id") || urlParams.get("reportId") || hashParams.get("id") || hashParams.get("reportId");
+    if (!id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(hashRaw)) {
+      id = hashRaw;
+    }
+  }
+
+  if (id) {
+    id = String(id).trim();
+    return isMath ? `math-${id}.pdf` : `theory-${id}.pdf`;
+  }
+  return isMath ? `math-report.pdf` : `theory-report.pdf`;
+}
+
+function downloadPDF() {
+  const element = document.getElementById("sheet");
+  if (!element) return;
+
+  // Auto-expand all student answer details before PDF export
+  document.querySelectorAll("details.answer-toggle").forEach(el => {
+    el.open = true;
+  });
+
+  const filename = getReportFilename(false);
+  showToast("Generating PDF download...");
+
+  if (typeof html2pdf === "function") {
+    const opt = {
+      margin: [10, 10, 10, 10],
+      filename: filename,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+    html2pdf().set(opt).from(element).save().then(() => {
+      showToast(`Downloaded ${filename}!`);
+    }).catch(err => {
+      console.warn("html2pdf error, falling back to print:", err);
+      window.print();
+    });
+  } else {
+    window.print();
+  }
+}
+
 /* ============================================================
    INIT ON PAGE LOAD & PARAMETER PARSING
    ============================================================ */
@@ -1296,7 +1394,11 @@ window.addEventListener("DOMContentLoaded", () => {
   const b64Param = urlParams.get("b64") || urlParams.get("base64") || hashParams.get("b64") || hashParams.get("base64");
   const dataParam = urlParams.get("data") || urlParams.get("json") || hashParams.get("data") || hashParams.get("json");
   const fetchUrlParam = urlParams.get("url") || urlParams.get("src") || urlParams.get("fetch") || hashParams.get("url");
-  const reportIdParam = urlParams.get("id") || urlParams.get("reportId");
+  
+  let reportIdParam = urlParams.get("id") || urlParams.get("reportId") || hashParams.get("id") || hashParams.get("reportId");
+  if (!reportIdParam && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(hash)) {
+    reportIdParam = hash;
+  }
   const tokenParam = urlParams.get("token") || urlParams.get("auth") || urlParams.get("bearer");
 
   // Helper for fetch headers
@@ -1307,6 +1409,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Option A: Report ID parameter (fetches directly from Gradified API endpoint)
   if (reportIdParam) {
+    currentReportId = reportIdParam;
     const apiHost = urlParams.get("apiHost") || "https://api.gradified.in";
     const apiUrl = `${apiHost}/api/v1/report/${encodeURIComponent(reportIdParam)}`;
     updateStatusTag(`Loading Report #${reportIdParam.substring(0,8)}...`);
