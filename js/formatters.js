@@ -1,0 +1,116 @@
+/**
+ * Utility string formatters, KaTeX math text formatters, confidence percentage calculation,
+ * and UI feedback toast helpers.
+ */
+
+/**
+ * Escapes unsafe HTML characters to prevent XSS injection.
+ * @param {any} value - Input string or object.
+ * @returns {string} Safe HTML string.
+ */
+function escapeHtml(value) {
+  if (value === null || value === undefined) return "";
+  return String(value).replace(/[&<>]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[char]));
+}
+
+/**
+ * Converts newlines to line breaks and formats LaTeX math text if KaTeX is available.
+ * @param {string} text - Input text.
+ * @returns {string} Formatted HTML.
+ */
+function formatMathText(text) {
+  if (!text) return "";
+  let safeText = escapeHtml(text);
+
+  safeText = safeText.replace(/(\\(?:frac|sqrt|angle|triangle|square|degree|pi|cdot|times|div|pm|leq|geq|neq|approx|sum|int|infty)(?:\{[^{}]*\}|\s+[a-zA-Z0-9]+)*)/g, function(match) {
+    return `\\(${match}\\)`;
+  });
+
+  return safeText.replace(/\n/g, '<br>');
+}
+
+/**
+ * Converts newlines to line breaks for formatted paragraph output.
+ * @param {string} text - Input text.
+ * @returns {string} Formatted HTML.
+ */
+function formatTextWithNewlines(text) {
+  return formatMathText(text);
+}
+
+/**
+ * Converts correctness key into display label.
+ * @param {string} status - Correctness status string.
+ * @returns {string} Display label.
+ */
+function getCorrectnessLabel(status) {
+  const statusLabels = {
+    correct: "Correct",
+    partially_correct: "Partial",
+    incorrect: "Incorrect"
+  };
+  return statusLabels[status] || status;
+}
+
+/**
+ * Formats numeric confidence value into percentage string (e.g. "96%").
+ * @param {number|string} confidenceValue - Raw confidence value.
+ * @returns {string} Percentage string.
+ */
+function formatConfidencePercent(confidenceValue) {
+  if (confidenceValue === null || confidenceValue === undefined || confidenceValue === "") return "";
+  const numericVal = Number(confidenceValue);
+  if (isNaN(numericVal)) return escapeHtml(confidenceValue);
+  const percentage = Math.round(numericVal <= 1 ? numericVal * 100 : numericVal);
+  return percentage + "%";
+}
+
+/**
+ * Returns color category CSS class based on confidence.
+ * @param {number|string} confidenceValue - Confidence score.
+ * @returns {string} CSS class name.
+ */
+function getConfidenceCssClass(confidenceValue) {
+  if (confidenceValue === null || confidenceValue === undefined || confidenceValue === "") return "";
+  const numericVal = Number(confidenceValue);
+  if (isNaN(numericVal)) return "";
+  const percentage = numericVal <= 1 ? numericVal * 100 : numericVal;
+  if (percentage >= 85) return "high";
+  if (percentage >= 65) return "medium";
+  return "low";
+}
+
+/**
+ * Displays brief feedback toast message.
+ * @param {string} message - Message text.
+ */
+function showToastMessage(message) {
+  const toastElement = document.getElementById("toast");
+  if (!toastElement) return;
+  toastElement.textContent = message;
+  toastElement.classList.add("show");
+  setTimeout(() => toastElement.classList.remove("show"), 3000);
+}
+
+/**
+ * Triggers KaTeX auto-render on the main assessment container.
+ */
+function renderAllMathFormulas() {
+  const container = document.getElementById("sheet");
+  if (!container || typeof renderMathInElement !== "function") return;
+  
+  try {
+    renderMathInElement(container, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true }
+      ],
+      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+      throwOnError: false
+    });
+  } catch (err) {
+    console.warn("KaTeX rendering warning:", err);
+  }
+}
